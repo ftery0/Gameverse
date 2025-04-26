@@ -1,0 +1,1 @@
+export type Category = "오락" | "코딩";
