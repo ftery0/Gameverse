@@ -1,3 +1,4 @@
+
 "use client";
 import { useState } from "react";
 import Link from "next/link";
@@ -5,9 +6,6 @@ import { games } from "@/constants/game/game.constants";
 import Image from "next/image";
 import { categories } from "@/constants/game/game.category.constants";
 import { Category } from "@/types/game/categories.type";
-
-
-
 
 const Home = () => {
   const [selectedCategory, setSelectedCategory] = useState<Category>("오락");

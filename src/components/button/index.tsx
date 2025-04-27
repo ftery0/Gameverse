@@ -10,7 +10,7 @@ interface ButtonProps {
   disabled?: boolean;
   onClick?: () => void;
   className?: string;
-  width?: string; // 추가: width 직접 제어
+  width?: string; 
 }
 
 const Button = ({
@@ -20,14 +20,14 @@ const Button = ({
   disabled = false,
   onClick,
   className,
-  width, // 추가
+  width,
 }: ButtonProps) => {
   const baseClasses = "inline-flex items-center justify-center rounded-md font-semibold transition-colors focus:outline-none cursor-pointer";
 
   const variantClasses = {
-    primary: "bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500",
+    primary: "bg-blue-400 text-white hover:bg-blue-500 focus:ring-blue-500",
     secondary: "bg-gray-200 text-black hover:bg-gray-300 focus:ring-gray-400",
-    danger: "bg-red-600 text-white hover:bg-red-700 focus:ring-red-500",
+    danger: "bg-red-400 text-white hover:bg-red-500 focus:ring-red-500",
   };
 
   const sizeClasses = {

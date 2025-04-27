@@ -1,17 +1,20 @@
+"use client";
+
 import { navLinks } from "@/constants/nav/nav.constants";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 
-const NavLinks = () => {
+const MobileNavLinks = ({ toggleMenu }: { toggleMenu: () => void }) => {
   const pathname = usePathname();
 
   return (
-    <nav className="hidden md:flex space-x-8 z-20">
+    <nav className="flex flex-col px-4 py-2 space-y-2">
       {navLinks.map((link) => (
         <Link
           key={link.href}
           href={link.href}
-          className={`font-medium ${
+          onClick={toggleMenu}
+          className={`block py-2 font-medium ${
             pathname === link.href
               ? "text-blue-600 font-bold"
               : "text-gray-700 hover:text-blue-600"
@@ -24,4 +27,4 @@ const NavLinks = () => {
   );
 };
 
-export default NavLinks  
+export default MobileNavLinks;

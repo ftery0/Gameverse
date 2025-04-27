@@ -7,6 +7,7 @@ import Image from "next/image";
 import { useProfileSession } from "@/hooks/profile/useprofile";
 import Skeleton from "react-loading-skeleton";
 import NavLinks from "./navLink";
+import MobileNavLinks from "./mobileNavLink";
 
 
 const Header = () => {
@@ -22,7 +23,7 @@ const Header = () => {
   };
 
   return (
-    <header className="w-full fixed top-0 left-0 z-50 h-20">
+    <header className="w-full fixed top-0 left-0 h-20 bg-white z-50">
       <div className="max-w-7xl mx-auto flex items-center justify-between px-4 h-full">
         
         <div className="flex items-center space-x-3">
@@ -57,9 +58,19 @@ const Header = () => {
 
       {/* 모바일 메뉴 펼침 */}
       {menuOpen && (
-        <div className="md:hidden bg-white px-4 pt-2 pb-4 space-y-2">
-          <NavLinks/>
-        </div>
+        <>
+        
+          
+          {/* 모바일 메뉴 */}
+          <div className="fixed top-20 left-0 w-full bg-white px-4 pt-2 pb-4 space-y-2 z-50 animate-slideDown">
+            <MobileNavLinks toggleMenu={toggleMenu} />
+          </div>
+          
+          <div 
+            onClick={toggleMenu} 
+            className="fixed h-full w-full bg-black opacity-50"
+          />
+        </>
       )}
     </header>
   );

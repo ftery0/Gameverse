@@ -8,7 +8,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
     <SessionProvider refetchOnWindowFocus={false}>
       <div className="bg-gray-50">
       <Header />
-        <div className="w-full min-h-screen flex flex-col items-center p-8 mt-20">
+        <div className="w-full min-h-screen flex flex-col items-center p-8 mt-20 scrollbar-hide">
         {children}
         </div>
       </div>
