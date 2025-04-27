@@ -2,19 +2,20 @@
 
 import React, { useState } from "react";
 import { Menu, X } from "lucide-react";
-import { usePathname } from "next/navigation"; 
-import { navLinks } from "@/constants/nav/nav.constants";
 import Avatar from "@/assets/img/Avatar.svg";
 import Image from "next/image";
-// import { useUser } from "@/hooks/profile/useprofile"; 
-// import Skeleton from "react-loading-skeleton"; 
 import { useProfileSession } from "@/hooks/profile/useprofile";
 import Skeleton from "react-loading-skeleton";
+import NavLinks from "./navLink";
+
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const {session,isLoading}= useProfileSession();
-  const pathname = usePathname(); 
+  console.log(isLoading);
+  
+  
+
 
   const toggleMenu = () => {
     setMenuOpen((prev) => !prev);
@@ -51,39 +52,13 @@ const Header = () => {
         </div>
 
         {/* 네비게이션 (PC용) */}
-        <nav className="hidden md:flex space-x-8">
-          {navLinks.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              className={`font-medium ${
-                pathname === link.href
-                  ? "text-blue-600 font-bold" 
-                  : "text-gray-700 hover:text-blue-600"
-              }`}
-            >
-              {link.label}
-            </a>
-          ))}
-        </nav>
+        <NavLinks/>
       </div>
 
       {/* 모바일 메뉴 펼침 */}
       {menuOpen && (
         <div className="md:hidden bg-white px-4 pt-2 pb-4 space-y-2">
-          {navLinks.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              className={`block font-medium ${
-                pathname === link.href
-                  ? "text-blue-600 font-bold"
-                  : "text-gray-700 hover:text-blue-600"
-              }`}
-            >
-              {link.label}
-            </a>
-          ))}
+          <NavLinks/>
         </div>
       )}
     </header>
