@@ -1,1 +1,1 @@
-export type Category = "오락" | "코딩";
+export type Category = "고전게임" | "코딩";

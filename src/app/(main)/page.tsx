@@ -8,7 +8,7 @@ import { categories } from "@/constants/game/game.category.constants";
 import { Category } from "@/types/game/categories.type";
 
 const Home = () => {
-  const [selectedCategory, setSelectedCategory] = useState<Category>("오락");
+  const [selectedCategory, setSelectedCategory] = useState<Category>("고전게임");
 
   const filteredGames = games.filter((game) => game.category === selectedCategory);
 

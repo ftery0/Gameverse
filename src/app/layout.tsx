@@ -27,9 +27,9 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased scrollbar-hide`}
       >
-          {children}
+        {children}
       </body>
     </html>
   );

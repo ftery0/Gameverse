@@ -4,7 +4,8 @@ import { useParams } from 'next/navigation';
 import { games } from '@/constants/game/game.constants';
 import Button from '@/components/button';
 import { useState } from 'react';
-import { getGameComponent } from '@/components/games/usegame'; // 이름 수정
+import { getGameComponent } from '@/components/games/usegame'; 
+import Link from 'next/link';
 
 const GameDetailPage = () => {
   const params = useParams<{ id: string }>();
@@ -24,6 +25,12 @@ const GameDetailPage = () => {
 
   return (
     <div className="w-full min-h-screen flex flex-col items-center justify-center p-4">
+       <Link
+        href="/"
+        className="absolute top-6 left-6 px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-lg text-sm font-semibold transition"
+      >
+        홈으로
+      </Link>
       {!selectedMode ? (
         <>
           <div className="text-center mb-8">
