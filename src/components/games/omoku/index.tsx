@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 interface OmokProps {
   mode: 'easy' | 'normal' | 'hard';
@@ -15,13 +15,60 @@ const Omok = ({ mode }: OmokProps) => {
   ]);
   const [inputMessage, setInputMessage] = useState('');
 
+  const socketRef = useRef<WebSocket | null>(null);
+
+  useEffect(() => {
+    const socket = new WebSocket('ws://localhost:8080');
+    socketRef.current = socket;
+
+    socket.onopen = () => {
+      console.log('✅ WebSocket 연결됨');
+    };
+
+    socket.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      if (data.type === 'aiMove') {
+        setChatMessages((prev) => [
+          ...prev,
+          `AI: 다음 수는 (${data.move.x}, ${data.move.y})입니다.`,
+        ]);
+      } else if (data.type === 'error') {
+        setChatMessages((prev) => [
+          ...prev,
+          `AI 오류: ${data.message}`,
+        ]);
+      }
+    };
+
+    socket.onerror = (err) => {
+      console.error('❌ WebSocket 오류:', err);
+    };
+
+    socket.onclose = () => {
+      console.log('❌ WebSocket 연결 종료');
+    };
+
+    return () => {
+      socket.close();
+    };
+  }, []);
+
   const handleSendMessage = () => {
     if (!inputMessage.trim()) return;
 
     setChatMessages((prev) => [...prev, `나: ${inputMessage}`]);
+
+    // 예시 보드 상태 (15x15 2차원 배열, 전부 0으로 초기화)
+    const dummyBoard = Array.from({ length: 15 }, () =>
+      Array.from({ length: 15 }, () => 0)
+    );
+
+    // WebSocket으로 전송
+    socketRef.current?.send(
+      JSON.stringify({ boardState: dummyBoard })
+    );
+
     setInputMessage('');
-    
-    // TODO: 여기에 AI 응답 로직 추가 가능
   };
 
   return (
@@ -29,7 +76,6 @@ const Omok = ({ mode }: OmokProps) => {
       {/* 왼쪽: 오목판 */}
       <div className="flex-1 bg-gray-100 flex items-center justify-center">
         <div className="w-[500px] h-[500px] bg-yellow-200 border-4 border-gray-700 grid grid-cols-15 grid-rows-15">
-          {/* 오목판 15x15 셀 - 나중에 여기에 돌 추가 */}
           {Array.from({ length: 15 * 15 }).map((_, idx) => (
             <div key={idx} className="border border-gray-400"></div>
           ))}
@@ -38,7 +84,6 @@ const Omok = ({ mode }: OmokProps) => {
 
       {/* 오른쪽: 채팅 & 네비 */}
       <div className="w-[400px] flex flex-col border-l border-gray-300">
-        {/* 채팅창 */}
         <div className="flex-1 p-4 overflow-y-auto">
           <h3 className="text-xl font-bold mb-2">AI 채팅</h3>
           {chatMessages.map((msg, idx) => (
@@ -48,7 +93,6 @@ const Omok = ({ mode }: OmokProps) => {
           ))}
         </div>
 
-        {/* 입력창 */}
         <div className="p-2 border-t border-gray-300">
           <div className="flex gap-2">
             <input
@@ -70,7 +114,6 @@ const Omok = ({ mode }: OmokProps) => {
           </div>
         </div>
 
-        {/* 네비게이션 알림 */}
         <div className="p-4 border-t border-gray-300 bg-gray-50 h-32 overflow-y-auto">
           <h3 className="text-md font-semibold mb-2">알림</h3>
           {notifications.map((note, idx) => (

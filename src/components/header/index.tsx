@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { Menu, X } from "lucide-react";
+import Link from "next/link";
 import Avatar from "@/assets/img/Avatar.svg";
 import Image from "next/image";
 import { useProfileSession } from "@/hooks/profile/useprofile";
@@ -10,13 +11,10 @@ import NavLinks from "./navLink";
 import MobileNavLinks from "./mobileNavLink";
 
 
+
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const {session,isLoading}= useProfileSession();
-  console.log(isLoading);
-  
-  
-
 
   const toggleMenu = () => {
     setMenuOpen((prev) => !prev);
@@ -41,7 +39,7 @@ const Header = () => {
 
           {/* 프로필 이름 */}
           <span className="font-semibold text-gray-800">
-            {isLoading ? <Skeleton width={100} /> : session?.user?.name ?? "Loading..."}
+            {isLoading ? <Skeleton width={100} /> : session?.user?.name ?? <Link href="/sign">로그인 하러가기</Link>}
           </span>
         </div>
 
