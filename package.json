@@ -3,12 +3,12 @@
   "version": "1.0.0",
   "scripts": {
     "dev": "turbo run dev",
+    "storybook": "turbo run storybook  --filter=./packages/ui",
     "build": "turbo run build",
     "lint": "next lint"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
   "packageManager": "pnpm@10.7.0",
   "devDependencies": {
     "eslint-config-custom": "*",

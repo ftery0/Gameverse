@@ -5,7 +5,6 @@
   "scripts": {
     "dev": "concurrently \"pnpm run next\" \"pnpm run server\"",
     "next": "next dev --turbo",
-    "server": "ts-node server/omokServer.ts",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
