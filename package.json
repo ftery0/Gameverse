@@ -1,42 +1,23 @@
 {
-  "name": "myapp",
-  "version": "0.1.0",
-  "private": true,
+  "name": "gameverse",
+  "version": "1.0.0",
   "scripts": {
-    "dev": "concurrently \"pnpm run next\" \"pnpm run server\"",
-    "next": "next dev --turbo",
-    "server": "ts-node server/omokServer.ts",
-    "build": "next build",
-    "start": "next start",
+    "dev": "turbo run dev",
+    "build": "turbo run build",
     "lint": "next lint"
   },
-  "dependencies": {
-    "@llama-node/llama-cpp": "^0.1.6",
-    "clsx": "^2.1.1",
-    "llama-node": "^0.1.6",
-    "lucide-react": "^0.503.0",
-    "mongoose": "^8.14.0",
-    "next": "15.3.1",
-    "next-auth": "^4.24.11",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "react-loading-skeleton": "^3.5.0",
-    "swr": "^2.3.3",
-    "tailwind-scrollbar-hide": "^2.0.0",
-    "ws": "^8.18.1"
-  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.7.0",
   "devDependencies": {
-    "@eslint/eslintrc": "^3",
-    "@tailwindcss/postcss": "^4",
-    "@types/node": "^20",
-    "@types/react": "^18.3.4",
-    "@types/react-dom": "^18.3.0",
-    "@types/ws": "^8.18.1",
-    "concurrently": "^9.1.2",
-    "eslint": "^9",
-    "eslint-config-next": "15.3.1",
-    "tailwindcss": "^4",
-    "ts-node": "^10.9.2",
-    "typescript": "^5"
+    "eslint-config-custom": "*",
+    "eslint": "^8",
+    "eslint-config-next": "14.2.13",
+    "prettier": "^3.4.2",
+    "turbo": "^2.3.3"
+  },
+  "dependencies": {
+    "eslint-config-custom": "^0.0.0"
   }
 }
