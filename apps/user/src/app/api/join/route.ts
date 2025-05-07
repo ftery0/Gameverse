@@ -1,4 +1,4 @@
-import { connectDB } from "@/libs/mongodb/mongodb";
+import { connectDB } from "@gameverse/lib";
 import { User } from "@/models/user";
 import { NextResponse } from "next/server";
 

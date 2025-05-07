@@ -1,6 +1,6 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import { connectDB } from "@/libs/mongodb/mongodb";
+import { connectDB } from "@gameverse/lib";
 import { User } from "@/models/user";
 import { NextResponse } from "next/server";
 
@@ -18,7 +18,7 @@ export async function GET() {
     return NextResponse.json({ error: "로그인이 필요합니다." }, { status: 401 });
   }
 
-  const userSession = session.user as SessionUser; // <- 타입 단언 추가!
+  const userSession = session.user as SessionUser; 
 
   await connectDB();
 

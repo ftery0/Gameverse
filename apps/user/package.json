@@ -1,12 +1,10 @@
 {
-  "name": "myapp",
+  "name": "user",
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "concurrently \"pnpm run next\" \"pnpm run server\"",
-    "next": "next dev --turbo",
+    "dev": "next dev --port 3001",
     "build": "next build",
-    "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
@@ -22,7 +20,7 @@
     "react-loading-skeleton": "^3.5.0",
     "swr": "^2.3.3",
     "tailwind-scrollbar-hide": "^2.0.0",
-    "ws": "^8.18.1"
+    "@gameverse/lib":"workspace:*"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
@@ -35,7 +33,6 @@
     "eslint": "^9",
     "eslint-config-next": "15.3.1",
     "tailwindcss": "^4",
-    "ts-node": "^10.9.2",
     "typescript": "^5"
   }
 }

@@ -3,7 +3,7 @@ import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { AuthOptions } from "next-auth";
-import { connectDB } from "@/libs/mongodb/mongodb";
+import { connectDB } from "@gameverse/lib";
 import { User } from "@/models/user";
 
 export const authOptions: AuthOptions = {
