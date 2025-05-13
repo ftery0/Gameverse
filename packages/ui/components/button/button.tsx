@@ -13,7 +13,7 @@ interface ButtonProps {
   width?: string; 
 }
 
-const Button = ({
+export const Button = ({
   children,
   variant = "primary",
   size = "md",
@@ -56,4 +56,3 @@ const Button = ({
   );
 };
 
-export default Button;

@@ -1,6 +1,5 @@
-import type { NextConfig } from "next";
-
-const nextConfig: NextConfig = {
+/** @type {import('next').NextConfig} */
+const nextConfig = {
   images: {
     domains: ['avatars.githubusercontent.com'],
   },
@@ -8,6 +7,9 @@ const nextConfig: NextConfig = {
     MONGODB_URI: process.env.MONGODB_URI,
   },
   reactStrictMode: false,
+  experimental: {
+    svgr: true,
+  },
 };
 
 export default nextConfig;

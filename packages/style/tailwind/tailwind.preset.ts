@@ -1,6 +1,6 @@
 import type { Config } from "tailwindcss";
 
-const stylePreset: Partial<Config> = {
+export const stylePreset: Partial<Config> = {
   theme: {
     extend: {
       colors: {
@@ -14,4 +14,4 @@ const stylePreset: Partial<Config> = {
   plugins: [],
 };
 
-export default stylePreset;
+

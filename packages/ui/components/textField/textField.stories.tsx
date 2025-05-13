@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
-import TextField from "./textField";
+import {TextField} from "./textField";
 
 const meta: Meta<typeof TextField> = {
   title: "Components/TextField",

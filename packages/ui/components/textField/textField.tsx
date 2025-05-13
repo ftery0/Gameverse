@@ -16,7 +16,7 @@ interface TextFieldProps{
   className?: string;
 };
 
-const TextField = ({
+export const TextField = ({
   label,
   name,
   type = "text",
@@ -57,4 +57,4 @@ const TextField = ({
   );
 };
 
-export default TextField;
+

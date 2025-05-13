@@ -2,7 +2,7 @@
 
 import { useParams } from 'next/navigation';
 import { games } from '@/constants/game/game.constants';
-import Button from '@/components/button';
+import { Button } from '@gameverse/ui';
 import { useState } from 'react';
 import { getGameComponent } from '@/components/games/usegame'; 
 import Link from 'next/link';

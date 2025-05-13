@@ -3,10 +3,7 @@
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 import Image from "next/image"; 
-import TextField from "@/components/textField";
-import Button from "@/components/button";
-import Google from "@/assets/img/Googlelogo.svg";
-import Github from "@/assets/img/Github.svg";
+import {TextField, Button} from "@gameverse/ui";
 import Link from "next/link";
 
 const SignPage = () => {
@@ -68,14 +65,14 @@ const SignPage = () => {
               onClick={() => handleSocialLogin('google')}
               className="flex items-center justify-center py-2.5 px-4 rounded-lg border border-gray-300 bg-white hover:bg-gray-50 transition-colors cursor-pointer"
             >
-              <Image src={Google} width={20} height={20} alt="Google 로고" className="mr-2" />
+              <Image src="/images/Googlelogo.svg" width={20} height={20} alt="Google 로고" className="mr-2" />
               Google
             </button>
             <button
               onClick={() => handleSocialLogin('github')}
               className="flex items-center justify-center py-2.5 px-4 rounded-lg border border-gray-300 bg-white hover:bg-gray-50 transition-colors cursor-pointer"
             >
-               <Image src={Github} width={20} height={20} alt="Google 로고" className="mr-2" />
+               <Image src="/images/Github.svg" width={20} height={20} alt="Google 로고" className="mr-2" />
               GitHub
             </button>
           </div>
