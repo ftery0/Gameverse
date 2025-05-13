@@ -1,0 +1,13 @@
+{
+  "name": "@gameverse/style",
+  "type": "module",
+  "version": "1.0.0",
+  "main": "./index.ts",
+  "sideEffects": false,
+  "dependencies": {
+    "tailwindcss": "^4.0.0",
+    "postcss": "^8.0.0",
+    "autoprefixer": "^10.0.0",
+    "tsconfig": "workspace:*"
+  }
+}

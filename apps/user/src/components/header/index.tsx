@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { Menu, X } from "lucide-react";
 import Link from "next/link";
-import Avatar from "@/assets/img/Avatar.svg";
+// import Avatar from "@/assets/img/Avatars.svg"
 import Image from "next/image";
 import { useProfileSession } from "@/hooks/profile/useprofile";
 import Skeleton from "react-loading-skeleton";
@@ -29,7 +29,7 @@ const Header = () => {
             <Skeleton circle={true} height={36} width={36} /> 
           ) : (
             <Image
-              src={session?.user?.image ? session?.user.image : Avatar}
+              src={session?.user?.image ? session?.user.image : "Avatar"}
               alt="Profile"
               width={36}
               height={36}
