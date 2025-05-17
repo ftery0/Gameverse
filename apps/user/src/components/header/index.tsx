@@ -29,12 +29,13 @@ const Header = () => {
             <Skeleton circle={true} height={36} width={36} /> 
           ) : (
             <Image
-              src={session?.user?.image ? session?.user.image : "Avatar"}
-              alt="Profile"
-              width={36}
-              height={36}
-              className="rounded-full"
-            />
+            src={session?.user?.image ?? "/images/Avatars.svg"}
+            alt="Profile"
+            width={36}
+            height={36}
+            className="rounded-full"
+          />
+          
           )} 
 
           {/* 프로필 이름 */}
