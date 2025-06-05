@@ -11,7 +11,11 @@ const SignPage = () => {
   const [password, setPassword] = useState("");
 
   const handleLogin = () => {
-    console.log("로그인 시도:", { id, password });
+    if (!id || !password) {
+      alert("아이디와 비밀번호를 입력해주세요.");
+      return;
+    }
+    
     signIn("credentials", {
       id,
       password,
@@ -72,8 +76,8 @@ const SignPage = () => {
               onClick={() => handleSocialLogin('github')}
               className="flex items-center justify-center py-2.5 px-4 rounded-lg border border-gray-300 bg-white hover:bg-gray-50 transition-colors cursor-pointer"
             >
-               <Image src="/images/Github.svg" width={20} height={20} alt="Google 로고" className="mr-2" />
-              GitHub
+               <Image src="/images/instagram.png" width={20} height={20} alt="인스타그램 로고" className="mr-2" />
+               Instagram
             </button>
           </div>
 
