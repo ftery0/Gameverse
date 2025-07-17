@@ -3,7 +3,8 @@
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 import Image from "next/image"; 
-import {TextField, Button} from "@gameverse/ui";
+import {TextField} from "@/components/textField";
+import {Button} from "@/components/button";
 import Link from "next/link";
 
 const SignPage = () => {

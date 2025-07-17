@@ -7,6 +7,14 @@ if (!MONGODB_URI) {
 }
 
 export const connectDB = async () => {
+  console.log("MONGODB_URI:", MONGODB_URI);
+    console.log("mongoose.connection.readyState:", mongoose.connection.readyState);
   if (mongoose.connection.readyState >= 1) return;
-  await mongoose.connect(MONGODB_URI);
+  try {
+    await mongoose.connect(MONGODB_URI);
+    console.log("✅ MongoDB 연결 성공");
+  } catch (error) {
+    console.error("❌ MongoDB 연결 실패:", error);
+    throw error;
+  }
 };
