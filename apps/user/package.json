@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --port 3001",
+    "dev": "next dev --port 3000",
     "build": "next build",
     "lint": "next lint"
   },
@@ -20,9 +20,7 @@
     "react-loading-skeleton": "^3.5.0",
     "swr": "^2.3.3",
     "tailwind-scrollbar-hide": "^2.0.0",
-    "@gameverse/lib":"workspace:*",
-    "@gameverse/style":"workspace:*",
-    "@gameverse/ui":"workspace:*"
+    "@gameverse/lib":"workspace:*"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

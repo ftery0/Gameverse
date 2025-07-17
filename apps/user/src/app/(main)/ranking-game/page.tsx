@@ -1,6 +1,6 @@
 "use client"
 
-import {Button} from "@gameverse/ui";
+import {Button} from "@/components/button";
 
 const RankingGame = () => {
  return(

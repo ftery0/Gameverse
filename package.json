@@ -11,13 +11,14 @@
   "author": "",
   "packageManager": "pnpm@10.7.0",
   "devDependencies": {
-    "eslint-config-custom": "*",
     "eslint": "^8",
+    "eslint-config-custom": "*",
     "eslint-config-next": "14.2.13",
     "prettier": "^3.4.2",
     "turbo": "^2.3.3"
   },
   "dependencies": {
+    "aws4": "^1.13.2",
     "eslint-config-custom": "^0.0.0"
   }
 }

@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import {Button, TextField} from "@gameverse/ui";
+import {Button} from "@/components/button";
+import {TextField} from "@/components/textField";
 import Link from "next/link";
 
 const JoinPage = () => {
