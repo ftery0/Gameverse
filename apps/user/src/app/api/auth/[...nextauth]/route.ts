@@ -20,7 +20,6 @@ export const authOptions: AuthOptions = {
       name: "credentials",
       credentials: {
         id: { label: "아이디", type: "text" },
-        name: { label: "이름", type: "text" },
         password: { label: "비밀번호", type: "password" },
       },
       async authorize(credentials) {
@@ -30,7 +29,7 @@ export const authOptions: AuthOptions = {
         const user = await User.findOne({ id, provider: "credentials" });
 
         if (user && user.password === password) {
-          return { id: user.id, name: user.name };
+          return { id: user.id, name: user.name, provider: "credentials" };
         } else {
           return null;
         }
@@ -42,6 +41,20 @@ export const authOptions: AuthOptions = {
   },
   debug: process.env.NODE_ENV === "development",
   callbacks: {
+    async jwt({ token, user, account }) {
+      if (user) {
+        token.id = user.id;
+        token.provider = account?.provider || "credentials";
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      if (token && session.user) {
+        session.user.id = token.id as string;
+        session.user.provider = token.provider as string;
+      }
+      return session;
+    },
     async signIn({ user, account }) {
       await connectDB();
 
