@@ -2,7 +2,7 @@
   "name": "gameverse",
   "version": "1.0.0",
   "scripts": {
-    "dev": "turbo run dev",
+    "dev": "concurrently \"pnpm --filter ./apps/user dev\" \"pnpm --filter ./server dev\"",
     "storybook": "turbo run storybook  --filter=./packages/ui",
     "build": "turbo run build",
     "lint": "next lint"
@@ -11,6 +11,8 @@
   "author": "",
   "packageManager": "pnpm@10.7.0",
   "devDependencies": {
+    "@types/ws": "^8.18.1",
+    "concurrently": "^9.1.2",
     "eslint": "^8",
     "eslint-config-custom": "*",
     "eslint-config-next": "14.2.13",
@@ -19,6 +21,8 @@
   },
   "dependencies": {
     "aws4": "^1.13.2",
-    "eslint-config-custom": "^0.0.0"
+    "eslint-config-custom": "^0.0.0",
+    "llama-node": "^0.1.6",
+    "ws": "^8.18.3"
   }
 }

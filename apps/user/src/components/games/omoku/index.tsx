@@ -4,9 +4,10 @@ import { useEffect, useRef, useState } from 'react';
 
 interface OmokProps {
   mode: 'easy' | 'normal' | 'hard';
+  roomId?: string;
 }
 
-const Omok = ({ mode }: OmokProps) => {
+const Omok = ({ mode, roomId }: OmokProps) => {
   const [chatMessages, setChatMessages] = useState<string[]>([
     'AI: 안녕하세요! 오목 게임을 시작해봅시다.',
   ]);
@@ -18,16 +19,26 @@ const Omok = ({ mode }: OmokProps) => {
   const socketRef = useRef<WebSocket | null>(null);
 
   useEffect(() => {
+    if (!roomId) return;
+
     const socket = new WebSocket('ws://localhost:8080');
     socketRef.current = socket;
 
     socket.onopen = () => {
       console.log('✅ WebSocket 연결됨');
+      // 방 입장 요청
+      socket.send(JSON.stringify({
+        type: 'joinRoom',
+        roomId
+      }));
     };
 
     socket.onmessage = (event) => {
       const data = JSON.parse(event.data);
-      if (data.type === 'aiMove') {
+      if (data.type === 'roomJoined') {
+        console.log('🎮 방 입장됨:', data.roomId);
+        setChatMessages(prev => [...prev, `시스템: ${data.gameType} 게임 (${data.difficulty} 난이도) 방에 입장했습니다.`]);
+      } else if (data.type === 'aiMove') {
         setChatMessages((prev) => [
           ...prev,
           `AI: 다음 수는 (${data.move.x}, ${data.move.y})입니다.`,
@@ -51,10 +62,10 @@ const Omok = ({ mode }: OmokProps) => {
     return () => {
       socket.close();
     };
-  }, []);
+  }, [roomId]);
 
   const handleSendMessage = () => {
-    if (!inputMessage.trim()) return;
+    if (!inputMessage.trim() || !roomId) return;
 
     setChatMessages((prev) => [...prev, `나: ${inputMessage}`]);
 
@@ -65,7 +76,11 @@ const Omok = ({ mode }: OmokProps) => {
 
     // WebSocket으로 전송
     socketRef.current?.send(
-      JSON.stringify({ boardState: dummyBoard })
+      JSON.stringify({ 
+        type: 'gameMove',
+        roomId,
+        boardState: dummyBoard 
+      })
     );
 
     setInputMessage('');
