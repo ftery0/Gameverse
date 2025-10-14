@@ -9,7 +9,9 @@
   },
   "dependencies": {
     "@llama-node/llama-cpp": "^0.1.6",
+    "axios": "^1.12.2",
     "clsx": "^2.1.1",
+    "jsonwebtoken": "^9.0.2",
     "llama-node": "^0.1.6",
     "lucide-react": "^0.503.0",
     "mongoose": "^8.14.0",
@@ -18,12 +20,14 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-loading-skeleton": "^3.5.0",
+    "socket.io-client": "^4.8.1",
     "swr": "^2.3.3",
     "tailwind-scrollbar-hide": "^2.0.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
+    "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^20",
     "@types/react": "^18.3.4",
     "@types/react-dom": "^18.3.0",

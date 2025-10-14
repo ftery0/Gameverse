@@ -5,6 +5,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { AuthOptions } from "next-auth";
 import { connectDB } from "@/libs/connectDB";
 import { User } from "@/models/user";
+import jwt from 'jsonwebtoken';
 
 export const authOptions: AuthOptions = {
   providers: [
@@ -29,6 +30,12 @@ export const authOptions: AuthOptions = {
         const user = await User.findOne({ id, provider: "credentials" });
 
         if (user && user.password === password) {
+          // JWT 토큰 생성
+          // const jwtToken = jwt.sign(
+          //   { id: user.id, name: user.name, provider: user.provider },
+          //   process.env.NEXTAUTH_SECRET as string,
+          //   { expiresIn: '1h' } // 토큰 유효 기간 1시간
+          // );
           return { id: user.id, name: user.name, provider: "credentials" };
         } else {
           return null;
@@ -42,17 +49,41 @@ export const authOptions: AuthOptions = {
   debug: process.env.NODE_ENV === "development",
   callbacks: {
     async jwt({ token, user, account }) {
+      console.log('JWT Callback - before update:', token);
       if (user) {
         token.id = user.id;
-        token.provider = account?.provider || "credentials";
+        token.name = user.name;
+        token.email = user.email; // NextAuth user 객체에 email이 있을 수 있음
+        token.provider = account?.provider || user.provider; // user.provider는 credentials에서 옴
       }
+
+      // token 객체의 현재 페이로드를 사용하여 새로운 JWT 토큰 생성
+      const signedToken = jwt.sign(
+        {
+          id: token.id,
+          name: token.name,
+          email: token.email || undefined, // email이 없을 수도 있으므로 undefined 처리
+          provider: token.provider,
+        },
+        process.env.NEXTAUTH_SECRET as string,
+        { expiresIn: '1h' } // 토큰 유효 기간 1시간
+      );
+      token.accessToken = signedToken; // 생성된 JWT 토큰을 accessToken으로 저장
+
+      console.log('JWT Callback - after update:', token);
       return token;
     },
     async session({ session, token }) {
+      console.log('Session Callback - before update:', session);
+      console.log('Session Callback - token:', token);
       if (token && session.user) {
         session.user.id = token.id as string;
         session.user.provider = token.provider as string;
+        if (token.accessToken) {
+          session.jwt = token.accessToken as string;
+        }
       }
+      console.log('Session Callback - after update:', session);
       return session;
     },
     async signIn({ user, account }) {
