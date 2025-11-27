@@ -3,9 +3,11 @@
 import { useParams } from 'next/navigation';
 import { games } from '@/constants/game/game.constants';
 import { Button } from "@/components/button";
-import { useState } from 'react';
-import { getGameComponent } from '@/components/games/usegame'; 
+import { useState, useEffect } from 'react';
+import { getGameComponent } from '@/components/games/usegame';
 import Link from 'next/link';
+import { io, Socket } from 'socket.io-client';
+import RankingBoard from '@/components/ranking/RankingBoard';
 
 const GameDetailPage = () => {
   const params = useParams<{ id: string }>();
@@ -16,6 +18,14 @@ const GameDetailPage = () => {
   const [selectedMode, setSelectedMode] = useState<'easy' | 'normal' | 'hard' | null>(null);
   const [roomId, setRoomId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [socket, setSocket] = useState<Socket | null>(null);
+  const [matchInfo, setMatchInfo] = useState<{ opponent: string, color: 'black' | 'white' } | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (socket) socket.disconnect();
+    };
+  }, [socket]);
 
   if (!game) {
     return <div className="text-center mt-10 text-lg text-red-500">게임을 찾을 수 없습니다.</div>;
@@ -23,122 +33,146 @@ const GameDetailPage = () => {
 
   const handleModeSelect = async (mode: 'easy' | 'normal' | 'hard') => {
     setIsLoading(true);
+    setSelectedMode(mode);
+
     try {
-      // WebSocket 연결 및 방 생성
-      const ws = new WebSocket('ws://localhost:8080');
-      
-      ws.onopen = () => {
-        console.log('✅ WebSocket 연결됨');
-        // 방 생성 요청
-        ws.send(JSON.stringify({
-          type: 'createRoom',
-          gameType: id,
-          difficulty: mode
-        }));
-      };
+      const newSocket = io('http://localhost:8080');
+      setSocket(newSocket);
 
-      ws.onmessage = (event) => {
-        const data = JSON.parse(event.data);
-        if (data.type === 'roomCreated') {
-          console.log('🎮 방 생성됨:', data.roomId);
-          setRoomId(data.roomId);
-          setSelectedMode(mode);
-          setIsLoading(false);
-        } else if (data.type === 'error') {
-          console.error('❌ 방 생성 실패:', data.message);
-          alert('게임 시작에 실패했습니다.');
-          setIsLoading(false);
-        }
-      };
+      newSocket.on('connect', () => {
+        console.log('✅ Socket connected');
+        // Join Queue
+        newSocket.emit('joinQueue', {
+          userId: `user-${Math.floor(Math.random() * 10000)}`, // Temporary random ID
+          userName: `Player ${Math.floor(Math.random() * 100)}`,
+          gameName: id
+        });
+      });
 
-      ws.onerror = (error) => {
-        console.error('❌ WebSocket 오류:', error);
-        alert('서버 연결에 실패했습니다.');
+      newSocket.on('matchFound', (data: { roomId: string, opponent: string, color: 'black' | 'white' }) => {
+        console.log('🎮 Match found:', data);
+        setRoomId(data.roomId);
+        setMatchInfo({ opponent: data.opponent, color: data.color });
         setIsLoading(false);
-      };
+      });
+
+      newSocket.on('disconnect', () => {
+        console.log('❌ Socket disconnected');
+        setIsLoading(false);
+      });
 
     } catch (error) {
-      console.error('❌ 게임 시작 오류:', error);
-      alert('게임 시작에 실패했습니다.');
+      console.error('❌ Connection error:', error);
+      alert('Failed to connect to server.');
       setIsLoading(false);
     }
   };
 
-  if (selectedMode && roomId) {
+  if (selectedMode && roomId && socket && matchInfo) {
     return (
       <div className="w-full min-h-screen flex flex-col items-center justify-center p-4 bg-gray-50">
-        <div className="flex flex-col items-center w-full max-w-5xl bg-white rounded-2xl shadow-lg p-6 sm:p-10">
-          <Link
-            href="/"
-            className="self-end mb-4 px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-lg text-sm font-semibold transition"
-          >
-            홈으로
-          </Link>
-          {getGameComponent({ mode: selectedMode, id, roomId })}
+        <div className="flex flex-col items-center w-full max-w-6xl bg-white rounded-2xl shadow-lg p-6 sm:p-10">
+          <div className="w-full flex justify-between items-center mb-6">
+            <h1 className="text-2xl font-bold text-gray-800">{game.title}</h1>
+            <Link
+              href="/"
+              className="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-lg text-sm font-semibold transition"
+            >
+              Exit Game
+            </Link>
+          </div>
+
+          {/* Pass socket and match info to game component */}
+          {getGameComponent({
+            mode: selectedMode,
+            id,
+            roomId,
+            socket: socket ?? undefined,
+            myColor: matchInfo.color,
+            opponentName: matchInfo.opponent
+          })}
         </div>
       </div>
     );
   }
 
   return (
-    <div className="w-full min-h-screen flex items-center justify-center p-4 bg-gray-50">
-      <div className="flex flex-col md:flex-row w-full max-w-5xl bg-white rounded-2xl shadow-lg overflow-hidden">
-        
-        {/* 왼쪽: 이미지 */}
-        <div className="w-full md:w-1/2 h-[300px] md:h-auto flex flex-col items-start justify-start p-6 md:p-10 gap-4">
+    <div className="w-full min-h-screen flex flex-col items-center p-4 bg-gray-50 gap-8">
+      {/* Game Intro Section */}
+      <div className="flex flex-col md:flex-row w-full max-w-5xl bg-white rounded-2xl shadow-lg overflow-hidden mt-10">
+
+        {/* Left: Image */}
+        <div className="w-full md:w-1/2 h-[300px] md:h-auto flex flex-col items-start justify-start p-6 md:p-10 gap-4 relative">
           <Link
             href="/"
-            className="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-lg text-sm font-semibold transition"
+            className="absolute top-6 left-6 px-4 py-2 bg-white/80 hover:bg-white text-gray-800 rounded-lg text-sm font-semibold transition shadow-sm backdrop-blur-sm z-10"
           >
-            홈으로
+            ← Home
           </Link>
           <img
             src={game.image}
             alt={game.title}
-            className="w-full h-full object-contain rounded-lg shadow"
+            className="w-full h-full object-cover absolute inset-0"
           />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
         </div>
 
-        {/* 오른쪽: 설명 + 난이도 선택 */}
-        <div className="w-full md:w-1/2 flex flex-col justify-between p-6 md:p-10 ">
+        {/* Right: Description + Play Button */}
+        <div className="w-full md:w-1/2 flex flex-col justify-between p-6 md:p-10 bg-white">
           <div>
-            <h1 className="text-2xl md:text-4xl font-bold mb-4 mt-2">{game.title}</h1>
-            <p className="text-base md:text-lg text-gray-600 mb-8">
+            <h1 className="text-3xl md:text-5xl font-bold mb-4 mt-2 text-gray-900">{game.title}</h1>
+            <p className="text-base md:text-lg text-gray-600 mb-8 leading-relaxed">
               {game.detail || game.description}
             </p>
           </div>
-          <div className="flex flex-col items-center">
-            <div className="flex flex-wrap justify-center gap-4 md:gap-6">
-              <Button
-                onClick={() => handleModeSelect("easy")}
-                variant="secondary"
-                size="lg"
-                width="w-24 md:w-28"
-                disabled={isLoading}
-              >
-                {isLoading ? '로딩중...' : '쉬움'}
-              </Button>
-              <Button
-                onClick={() => handleModeSelect("normal")}
-                variant="primary"
-                size="lg"
-                width="w-24 md:w-28"
-                disabled={isLoading}
-              >
-                {isLoading ? '로딩중...' : '보통'}
-              </Button>
-              <Button
-                onClick={() => handleModeSelect("hard")}
-                variant="danger"
-                size="lg"
-                width="w-24 md:w-28"
-                disabled={isLoading}
-              >
-                {isLoading ? '로딩중...' : '어려움'}
-              </Button>
-            </div>
+
+          <div className="flex flex-col items-center gap-4">
+            {isLoading ? (
+              <div className="flex flex-col items-center gap-3">
+                <div className="w-8 h-8 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin" />
+                <p className="text-indigo-600 font-semibold animate-pulse">Finding match...</p>
+              </div>
+            ) : (
+              <div className="w-full">
+                <p className="text-center text-gray-500 mb-3 text-sm font-medium uppercase tracking-wide">Select Difficulty to Start</p>
+                <div className="flex flex-wrap justify-center gap-4">
+                  <Button
+                    onClick={() => handleModeSelect("easy")}
+                    variant="secondary"
+                    size="lg"
+                    className="flex-1 min-w-[100px]"
+                    disabled={isLoading}
+                  >
+                    Easy
+                  </Button>
+                  <Button
+                    onClick={() => handleModeSelect("normal")}
+                    variant="primary"
+                    size="lg"
+                    className="flex-1 min-w-[100px]"
+                    disabled={isLoading}
+                  >
+                    Normal
+                  </Button>
+                  <Button
+                    onClick={() => handleModeSelect("hard")}
+                    variant="danger"
+                    size="lg"
+                    className="flex-1 min-w-[100px]"
+                    disabled={isLoading}
+                  >
+                    Hard
+                  </Button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
+      </div>
+
+      {/* Ranking Section */}
+      <div className="w-full max-w-5xl">
+        <RankingBoard />
       </div>
     </div>
   );

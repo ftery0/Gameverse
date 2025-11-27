@@ -1,0 +1,14 @@
+﻿.next/types/app/(main)/ranking-game/[roomId]/page.ts(34,29): error TS2344: Type 'ChessGameProps' does not satisfy the constraint 'PageProps'.
+  Types of property 'params' are incompatible.
+    Type '{ roomId: string; }' is missing the following properties from type 'Promise<any>': then, catch, finally, [Symbol.toStringTag]
+.next/types/app/api/auth/[...nextauth]/route.ts(12,13): error TS2344: Type 'OmitWithTag<typeof import("C:/Users/user/Documents/GitHub/gameverse-space/Gameverse/src/app/api/auth/[...nextauth]/route"), "POST" | "config" | "generateStaticParams" | "revalidate" | ... 11 more ... | "PATCH", "">' does not satisfy the constraint '{ [x: string]: never; }'.
+  Property 'authOptions' is incompatible with index signature.
+    Type 'AuthOptions' is not assignable to type 'never'.
+src/app/api/health/route.ts(1,27): error TS2307: Cannot find module '@gameverse/lib' or its corresponding type declarations.
+src/app/api/user/route.ts(3,27): error TS2307: Cannot find module '@gameverse/lib' or its corresponding type declarations.
+src/components/button/button.stories.tsx(1,37): error TS2307: Cannot find module '@storybook/react' or its corresponding type declarations.
+src/components/textField/textField.stories.tsx(2,37): error TS2307: Cannot find module '@storybook/react' or its corresponding type declarations.
+src/components/toast/GameverseToastContainer.tsx(2,32): error TS2307: Cannot find module 'react-toastify' or its corresponding type declarations.
+src/components/toast/GameverseToastContainer.type.ts(1,37): error TS2307: Cannot find module 'react-toastify' or its corresponding type declarations.
+src/components/toast/ToastService.ts(1,23): error TS2307: Cannot find module 'react-toastify' or its corresponding type declarations.
+tailwind.config.ts(2,29): error TS2307: Cannot find module '../../packages/style/tailwind/tailwind.preset' or its corresponding type declarations.
