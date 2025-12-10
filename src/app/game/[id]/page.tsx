@@ -70,28 +70,16 @@ const GameDetailPage = () => {
 
   if (selectedMode && roomId && socket && matchInfo) {
     return (
-      <div className="w-full min-h-screen flex flex-col items-center justify-center p-4 bg-gray-50">
-        <div className="flex flex-col items-center w-full max-w-6xl bg-white rounded-2xl shadow-lg p-6 sm:p-10">
-          <div className="w-full flex justify-between items-center mb-6">
-            <h1 className="text-2xl font-bold text-gray-800">{game.title}</h1>
-            <Link
-              href="/"
-              className="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-lg text-sm font-semibold transition"
-            >
-              Exit Game
-            </Link>
-          </div>
-
-          {/* Pass socket and match info to game component */}
-          {getGameComponent({
-            mode: selectedMode,
-            id,
-            roomId,
-            socket: socket ?? undefined,
-            myColor: matchInfo.color,
-            opponentName: matchInfo.opponent
-          })}
-        </div>
+      <div className="w-full h-screen overflow-hidden">
+        {/* Pass socket and match info to game component */}
+        {getGameComponent({
+          mode: selectedMode,
+          id,
+          roomId,
+          socket: socket ?? undefined,
+          myColor: matchInfo.color,
+          opponentName: matchInfo.opponent
+        })}
       </div>
     );
   }
