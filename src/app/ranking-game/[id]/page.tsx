@@ -42,7 +42,8 @@ const RankedGamePage = () => {
                 newSocket.emit('joinQueue', {
                     userId: `user-${Math.floor(Math.random() * 10000)}`,
                     userName: `Player ${Math.floor(Math.random() * 100)}`,
-                    gameName: id
+                    gameName: id,
+                    isRanked: true
                 });
             });
 

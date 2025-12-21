@@ -10,9 +10,6 @@ const nextConfig = {
     MONGODB_URI: process.env.MONGODB_URI,
   },
   reactStrictMode: false,
-  experimental: {
-    svgr: true,
-  },
 };
 
 export default nextConfig;
